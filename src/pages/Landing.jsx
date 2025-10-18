@@ -139,7 +139,6 @@ function Landing() {
           .addTo(map.current);
       });
     });
-
     }, 100); // Small delay to ensure DOM is ready
 
     // Cleanup
