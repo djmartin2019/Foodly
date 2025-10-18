@@ -5,34 +5,50 @@ import react from "@vitejs/plugin-react";
 export default defineConfig(({ mode }) => {
   // Cloudflare Pages specific environment variable handling
   // Cloudflare Pages passes env vars differently than other platforms
-  
+
   console.log("Building with environment:", mode);
-  console.log("Process.env keys:", Object.keys(process.env).filter(key => 
-    key.includes('SUPABASE') || key.includes('MAPBOX') || key.includes('VITE_')
-  ));
+  console.log(
+    "Process.env keys:",
+    Object.keys(process.env).filter(
+      (key) =>
+        key.includes("SUPABASE") ||
+        key.includes("MAPBOX") ||
+        key.includes("VITE_")
+    )
+  );
 
   // Try multiple ways Cloudflare Pages might pass environment variables
   const getEnvVar = (key: string) => {
     // Try different variations that Cloudflare Pages might use
     const variations = [
-      process.env[key],                    // Direct access
-      process.env[`VITE_${key}`],          // With VITE_ prefix
-      process.env[key.toUpperCase()],      // Uppercase
+      process.env[key], // Direct access
+      process.env[`VITE_${key}`], // With VITE_ prefix
+      process.env[key.toUpperCase()], // Uppercase
       process.env[`VITE_${key.toUpperCase()}`], // VITE_ + uppercase
     ];
-    
-    const value = variations.find(v => v);
-    console.log(`${key}:`, value ? "✅ Found" : "❌ Missing", value ? `(${value.substring(0, 20)}...)` : "");
+
+    const value = variations.find((v) => v);
+    console.log(
+      `${key}:`,
+      value ? "✅ Found" : "❌ Missing",
+      value ? `(${value.substring(0, 20)}...)` : ""
+    );
     return value;
   };
 
-  const supabaseUrl = getEnvVar('SUPABASE_URL') || getEnvVar('VITE_SUPABASE_URL');
-  const supabaseAnonKey = getEnvVar('SUPABASE_ANON_KEY') || getEnvVar('VITE_SUPABASE_ANON_KEY');
-  const mapboxToken = getEnvVar('MAPBOX_TOKEN') || getEnvVar('VITE_MAPBOX_TOKEN');
+  const supabaseUrl =
+    getEnvVar("SUPABASE_URL") || getEnvVar("VITE_SUPABASE_URL");
+  const supabaseAnonKey =
+    getEnvVar("SUPABASE_ANON_KEY") || getEnvVar("VITE_SUPABASE_ANON_KEY");
+  const mapboxToken =
+    getEnvVar("MAPBOX_TOKEN") || getEnvVar("VITE_MAPBOX_TOKEN");
 
   console.log("Final resolved values:");
   console.log("Supabase URL:", supabaseUrl ? "✅ Present" : "❌ Missing");
-  console.log("Supabase Anon Key:", supabaseAnonKey ? "✅ Present" : "❌ Missing");
+  console.log(
+    "Supabase Anon Key:",
+    supabaseAnonKey ? "✅ Present" : "❌ Missing"
+  );
   console.log("Mapbox Token:", mapboxToken ? "✅ Present" : "❌ Missing");
 
   return {
