@@ -49,12 +49,17 @@ export const AuthProvider = ({ children }) => {
         .from("profiles")
         .select("*")
         .eq("id", userId)
-        .single();
+        .maybeSingle(); // Use maybeSingle() instead of single() to handle empty results gracefully
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
+
       setProfile(data);
     } catch (error) {
       console.error("Error fetching profile:", error.message);
+      // Don't throw the error, just log it and continue
     } finally {
       setLoading(false);
     }

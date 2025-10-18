@@ -19,7 +19,6 @@ if (!mapboxToken) {
   console.warn("⚠️ Mapbox token not found");
 } else {
   mapboxgl.accessToken = mapboxToken;
-  console.log("✅ Mapbox token loaded successfully");
 }
 
 function Landing() {
