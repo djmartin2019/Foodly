@@ -31,6 +31,51 @@ A modern, dark-mode web app for discovering local food spots through community-d
 - Smooth animations and hover states
 - Mobile-first responsive design
 
+## Cloudflare Pages Deployment Fix
+
+### Environment Variables Issue Resolution
+
+If you're experiencing "Missing Supabase environment variables" errors on Cloudflare Pages:
+
+1. **Ensure Build System Version = 3**
+   - Go to Cloudflare Pages > Settings > Builds & deployments
+   - Set Build system version to 3
+
+2. **Variables defined under "Production" and "Preview"**
+   - Go to Settings > Environment variables
+   - Add these variables to BOTH environments:
+     - `VITE_SUPABASE_URL`
+     - `VITE_SUPABASE_ANON_KEY`
+     - `VITE_MAPBOX_TOKEN`
+
+3. **Redeploy with "Clear Build Cache" checked**
+   - Go to Deployments tab
+   - Click "Retry deployment"
+   - Check "Clear build cache" option
+   - Wait for deployment to complete
+
+4. **Verify in console:**
+   ```javascript
+   console.log(import.meta.env)
+   ```
+   Should show all `VITE_` variables present.
+
+5. **If you still see `Missing`, confirm `vite.config.ts` includes loadEnv()**
+   - The updated config explicitly loads and defines environment variables
+   - Check build logs for "✅ Present" messages during build
+
+### Build Log Verification
+
+During deployment, you should see in build logs:
+```
+Building with environment: production
+Supabase URL (sanity check): ✅ Present
+Supabase Anon Key (sanity check): ✅ Present
+Mapbox Token (sanity check): ✅ Present
+```
+
+If any show "❌ Missing", the environment variables aren't properly configured in Cloudflare Pages.
+
 ## Getting Started
 
 ### Prerequisites
