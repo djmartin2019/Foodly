@@ -94,6 +94,3 @@ export const supabase = new Proxy({} as any, {
     };
   }
 });
-
-// Also export the promise for direct access when needed
-export { supabasePromise as supabase };
