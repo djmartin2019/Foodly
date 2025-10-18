@@ -12,19 +12,35 @@ import { useAuth } from "../contexts/AuthContext";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-// Set Mapbox access token with simple fallback
-const getMapboxToken = () => {
-  return import.meta.env.VITE_MAPBOX_TOKEN || 
-         "pk.eyJ1IjoiZGptYXJ0aW4yMDE5IiwiYSI6ImNtZ3doNjRheDA4YWcya29jdWluamJiOHlifQ.6GnpfyZAEN4PL5zBXOsP_A";
+// Set Mapbox access token with secure runtime config
+const initializeMapbox = async () => {
+  // Try import.meta.env first (build-time)
+  if (import.meta.env.VITE_MAPBOX_TOKEN) {
+    mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
+    console.log("✅ Mapbox token loaded from build-time env");
+    return;
+  }
+  
+  // Try runtime config from Cloudflare Pages Function
+  try {
+    const response = await fetch('/api/config');
+    if (response.ok) {
+      const config = await response.json();
+      if (config.VITE_MAPBOX_TOKEN) {
+        mapboxgl.accessToken = config.VITE_MAPBOX_TOKEN;
+        console.log("✅ Mapbox token loaded from runtime config");
+        return;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to fetch Mapbox token from config:', error);
+  }
+  
+  console.warn("⚠️ Mapbox token not found");
 };
 
-mapboxgl.accessToken = getMapboxToken();
-
-if (!mapboxgl.accessToken) {
-  console.warn("⚠️ Mapbox token not found");
-} else {
-  console.log("✅ Mapbox token loaded successfully");
-}
+// Initialize Mapbox token
+initializeMapbox();
 
 function Landing() {
   const [isVisible, setIsVisible] = useState(false);

@@ -7,6 +7,13 @@ export async function onRequest(context) {
     VITE_MAPBOX_TOKEN: context.env.VITE_MAPBOX_TOKEN,
   };
 
+  // Log for debugging (remove in production)
+  console.log('Config endpoint called, env vars available:', {
+    supabaseUrl: config.VITE_SUPABASE_URL ? '✅' : '❌',
+    supabaseKey: config.VITE_SUPABASE_ANON_KEY ? '✅' : '❌',
+    mapboxToken: config.VITE_MAPBOX_TOKEN ? '✅' : '❌',
+  });
+
   // Return as JSON with CORS headers
   return new Response(JSON.stringify(config), {
     headers: {
