@@ -60,11 +60,6 @@ function Landing() {
       return;
     }
 
-    // Clear any existing content in the map container
-    if (mapContainer.current) {
-      mapContainer.current.innerHTML = '';
-    }
-
     // Initialize map
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -144,7 +139,12 @@ function Landing() {
     // Cleanup
     return () => {
       if (map.current) {
-        map.current.remove();
+        try {
+          map.current.remove();
+        } catch (error) {
+          // Ignore cleanup errors - map might already be removed
+          console.warn("Map cleanup error:", error);
+        }
         map.current = null;
       }
     };
@@ -362,6 +362,7 @@ function Landing() {
                 {/* Interactive Map */}
                 <div className="relative rounded-2xl overflow-hidden mb-4 border border-zinc-800/50">
                   <div
+                    key="map-container"
                     ref={mapContainer}
                     className="w-full h-[200px]"
                     style={{
