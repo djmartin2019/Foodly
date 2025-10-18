@@ -18,19 +18,29 @@ export default defineConfig(({ mode }) => {
   });
 
   // ✅ Debug: Show what's actually in process.env
-  console.log("🔍 Process.env keys containing VITE_:", 
-    Object.keys(process.env).filter(key => key.startsWith('VITE_'))
+  console.log(
+    "🔍 Process.env keys containing VITE_:",
+    Object.keys(process.env).filter((key) => key.startsWith("VITE_"))
   );
 
   // ✅ Fallback values for Cloudflare Pages (when env vars aren't passed)
-  const supabaseUrl = env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL || "https://tbcodjhsyktoldyzflax.supabase.co";
-  const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRiY29kamhzeWt0b2xkeXpmbGF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MjcyMjcsImV4cCI6MjA3NjMwMzIyN30.rD6ICOoQSmUCpAdUp8QnXnHMO3jwyiEXThoXM2bdDgY";
-  const mapboxToken = env.VITE_MAPBOX_TOKEN || process.env.VITE_MAPBOX_TOKEN || "pk.eyJ1IjoiZGptYXJ0aW4yMDE5IiwiYSI6ImNtZ3doNjRheDA4YWcya29jdWluamJiOHlifQ.6GnpfyZAEN4PL5zBXOsP_A";
+  const supabaseUrl =
+    env.VITE_SUPABASE_URL ||
+    process.env.VITE_SUPABASE_URL ||
+    "https://tbcodjhsyktoldyzflax.supabase.co";
+  const supabaseAnonKey =
+    env.VITE_SUPABASE_ANON_KEY ||
+    process.env.VITE_SUPABASE_ANON_KEY ||
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRiY29kamhzeWt0b2xkeXpmbGF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MjcyMjcsImV4cCI6MjA3NjMwMzIyN30.rD6ICOoQSmUCpAdUp8QnXnHMO3jwyiEXThoXM2bdDgY";
+  const mapboxToken =
+    env.VITE_MAPBOX_TOKEN ||
+    process.env.VITE_MAPBOX_TOKEN ||
+    "pk.eyJ1IjoiZGptYXJ0aW4yMDE5IiwiYSI6ImNtZ3doNjRheDA4YWcya29jdWluamJiOHlifQ.6GnpfyZAEN4PL5zBXOsP_A";
 
   console.log("🎯 Final resolved values:");
   console.table({
     "Supabase URL": supabaseUrl ? "✅ Resolved" : "❌ Missing",
-    "Supabase Key": supabaseAnonKey ? "✅ Resolved" : "❌ Missing", 
+    "Supabase Key": supabaseAnonKey ? "✅ Resolved" : "❌ Missing",
     "Mapbox Token": mapboxToken ? "✅ Resolved" : "❌ Missing",
   });
 
