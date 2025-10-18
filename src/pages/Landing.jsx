@@ -12,22 +12,38 @@ import { useAuth } from "../contexts/AuthContext";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-// Set Mapbox access token with runtime config fallback
-const getMapboxToken = () => {
+// Set Mapbox access token with secure runtime config
+const getMapboxToken = async () => {
   // Try import.meta.env first (build-time)
   if (import.meta.env.VITE_MAPBOX_TOKEN) {
     return import.meta.env.VITE_MAPBOX_TOKEN;
   }
   
-  // Try window.APP_CONFIG (runtime config)
-  if (typeof window !== 'undefined' && window.APP_CONFIG && window.APP_CONFIG.VITE_MAPBOX_TOKEN) {
-    return window.APP_CONFIG.VITE_MAPBOX_TOKEN;
+  // Try runtime config from Cloudflare Pages Function
+  try {
+    const response = await fetch('/api/config');
+    if (response.ok) {
+      const config = await response.json();
+      if (config.VITE_MAPBOX_TOKEN) {
+        return config.VITE_MAPBOX_TOKEN;
+      }
+    }
+  } catch (error) {
+    console.warn('Failed to fetch Mapbox token from config:', error);
   }
   
   return null;
 };
 
-mapboxgl.accessToken = getMapboxToken() || "";
+// Initialize Mapbox token
+getMapboxToken().then(token => {
+  if (token) {
+    mapboxgl.accessToken = token;
+    console.log('✅ Mapbox token loaded successfully');
+  } else {
+    console.warn('⚠️ Mapbox token not found');
+  }
+});
 
 function Landing() {
   const [isVisible, setIsVisible] = useState(false);
