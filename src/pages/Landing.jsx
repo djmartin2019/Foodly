@@ -12,8 +12,22 @@ import { useAuth } from "../contexts/AuthContext";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-// Set Mapbox access token
-mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN || "";
+// Set Mapbox access token with runtime config fallback
+const getMapboxToken = () => {
+  // Try import.meta.env first (build-time)
+  if (import.meta.env.VITE_MAPBOX_TOKEN) {
+    return import.meta.env.VITE_MAPBOX_TOKEN;
+  }
+  
+  // Try window.APP_CONFIG (runtime config)
+  if (typeof window !== 'undefined' && window.APP_CONFIG && window.APP_CONFIG.VITE_MAPBOX_TOKEN) {
+    return window.APP_CONFIG.VITE_MAPBOX_TOKEN;
+  }
+  
+  return null;
+};
+
+mapboxgl.accessToken = getMapboxToken() || "";
 
 function Landing() {
   const [isVisible, setIsVisible] = useState(false);
