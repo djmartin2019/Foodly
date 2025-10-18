@@ -1,0 +1,23 @@
+# Cloudflare Wrangler Configuration for Foodly
+# While Cloudflare Pages doesn't require this for basic deployments,
+# it's useful for future Cloudflare Workers/Pages Functions integration
+
+name = "foodly"
+compatibility_date = "2025-01-01"
+
+# Pages configuration
+pages_build_output_dir = "dist"
+
+# Uncomment these if you add Cloudflare Pages Functions later
+# [env.production]
+# vars = { ENVIRONMENT = "production" }
+
+# [env.preview]
+# vars = { ENVIRONMENT = "preview" }
+
+# Note: For Cloudflare Pages deployment via GitHub:
+# 1. Connect your repo at https://dash.cloudflare.com/pages
+# 2. Build command: npm run build
+# 3. Output directory: dist
+# 4. Add environment variables in Cloudflare Dashboard
+

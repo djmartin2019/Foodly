@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   MapPin,
   Heart,
@@ -9,9 +9,17 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+
+// Set Mapbox access token
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN || "";
 
 function Landing() {
   const [isVisible, setIsVisible] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const mapContainer = useRef(null);
+  const map = useRef(null);
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -34,6 +42,101 @@ function Landing() {
     });
 
     return () => observer.disconnect();
+  }, []);
+
+  // Initialize map for community section
+  useEffect(() => {
+    if (!mapContainer.current || map.current) return;
+
+    // Check if token is available
+    if (!mapboxgl.accessToken) {
+      console.warn("Mapbox token not found. Map will not render.");
+      return;
+    }
+
+    // Initialize map
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: "mapbox://styles/mapbox/dark-v11",
+      center: [-95.3698, 29.7604], // Houston, TX
+      zoom: 13,
+      attributionControl: false,
+    });
+
+    // Wait for map to load
+    map.current.on("load", () => {
+      setMapLoaded(true);
+
+      // Create custom marker element for Pho Spot
+      const markerElement = document.createElement("div");
+      markerElement.className = "custom-marker";
+      markerElement.style.width = "32px";
+      markerElement.style.height = "32px";
+      markerElement.style.borderRadius = "50%";
+      markerElement.style.backgroundColor = "#24C38C";
+      markerElement.style.border = "3px solid #0B0F0E";
+      markerElement.style.boxShadow = "0 0 20px rgba(36, 195, 140, 0.6)";
+      markerElement.style.cursor = "pointer";
+      markerElement.style.display = "flex";
+      markerElement.style.alignItems = "center";
+      markerElement.style.justifyContent = "center";
+      markerElement.innerHTML = "📍";
+      markerElement.style.fontSize = "16px";
+
+      // Add main marker for "Pho Spot on 5th"
+      const marker = new mapboxgl.Marker({
+        element: markerElement,
+        anchor: "bottom",
+      })
+        .setLngLat([-95.3698, 29.7604])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25, className: "map-popup" }).setHTML(
+            `
+            <div style="background: #18181B; color: #fff; padding: 12px; border-radius: 8px; border: 1px solid #24C38C44;">
+              <h4 style="font-weight: bold; margin: 0 0 4px 0; color: #24C38C;">Pho Spot on 5th</h4>
+              <p style="margin: 0; font-size: 12px; color: #A1A1AA;">Best banh mi in the neighborhood</p>
+              <div style="margin-top: 8px; font-size: 11px; color: #71717A;">
+                ❤️ 127 vouches • 📍 0.3 mi away
+              </div>
+            </div>
+          `
+          )
+        )
+        .addTo(map.current);
+
+      // Add ambient markers for visual interest
+      const ambientLocations = [
+        { lng: -95.3798, lat: 29.7704, name: "Taco Haven" },
+        { lng: -95.3598, lat: 29.7504, name: "Coffee Hideout" },
+        { lng: -95.3898, lat: 29.7504, name: "Dim Sum Palace" },
+      ];
+
+      ambientLocations.forEach((location) => {
+        const ambientMarker = document.createElement("div");
+        ambientMarker.style.width = "12px";
+        ambientMarker.style.height = "12px";
+        ambientMarker.style.borderRadius = "50%";
+        ambientMarker.style.backgroundColor = "#2EE59D";
+        ambientMarker.style.border = "2px solid #0B0F0E";
+        ambientMarker.style.boxShadow = "0 0 10px rgba(46, 229, 157, 0.4)";
+        ambientMarker.style.opacity = "0.6";
+
+        new mapboxgl.Marker({
+          element: ambientMarker,
+          anchor: "center",
+        })
+          .setLngLat([location.lng, location.lat])
+          .addTo(map.current);
+      });
+    });
+
+    // Cleanup
+    return () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    };
   }, []);
 
   const handleCTAClick = (e) => {
@@ -245,9 +348,39 @@ function Landing() {
                   </div>
                 </div>
 
-                {/* Mock Image */}
-                <div className="relative rounded-2xl overflow-hidden mb-4 bg-gradient-to-br from-zinc-800 to-zinc-900 aspect-video flex items-center justify-center">
-                  <MapPin className="w-16 h-16 text-brand-green/20" />
+                {/* Interactive Map */}
+                <div className="relative rounded-2xl overflow-hidden mb-4 border border-zinc-800/50">
+                  <div
+                    ref={mapContainer}
+                    className="w-full h-[200px]"
+                    style={{
+                      background: mapLoaded ? "transparent" : "#18181B",
+                    }}
+                  >
+                    {/* Loading state */}
+                    {!mapLoaded && !mapboxgl.accessToken && (
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900/50 backdrop-blur-sm">
+                        <MapPin className="w-12 h-12 text-brand-green/30 mb-2" />
+                        <p className="text-zinc-500 text-xs">
+                          Map preview coming soon
+                        </p>
+                      </div>
+                    )}
+                    {!mapLoaded && mapboxgl.accessToken && (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-6 h-6 border-2 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Map overlay */}
+                  <div className="absolute top-2 right-2 glass rounded-lg px-2 py-1 border border-zinc-800">
+                    <p className="text-xs text-zinc-400">
+                      <span className="text-brand-green font-semibold">
+                        Live
+                      </span>
+                    </p>
+                  </div>
                 </div>
 
                 {/* Content */}

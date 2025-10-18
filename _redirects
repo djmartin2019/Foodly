@@ -1,0 +1,4 @@
+# Cloudflare Pages Redirects
+# SPA redirect - send all routes to index.html for client-side routing
+/* /index.html 200
+

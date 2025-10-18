@@ -1,0 +1,15 @@
+# Copy this file to .env and fill in your actual values
+# NEVER commit your .env file with real secrets to version control!
+
+# Supabase Configuration
+# Get these from: https://app.supabase.com/project/_/settings/api
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_key_here
+
+# MapTiler API Key (alternative map provider)
+# Get from: https://cloud.maptiler.com/account/keys/
+VITE_MAPTILER_KEY=your_maptiler_key_here
+
+# Optional: Environment identifier
+VITE_APP_ENV=development
+

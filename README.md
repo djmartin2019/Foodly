@@ -85,9 +85,131 @@ The app will be available at `http://localhost:5173`
 # Build for production
 npm run build
 
-# Preview production build
+# Preview production build locally
 npm run preview
 ```
+
+## Deployment
+
+### Deploying to Cloudflare Pages
+
+Foodly is optimized for deployment on Cloudflare Pages with automatic GitHub integration.
+
+#### Prerequisites
+
+- A [Cloudflare account](https://dash.cloudflare.com/sign-up)
+- Your project pushed to a GitHub repository
+- Supabase project set up with the database schema
+
+#### Step 1: Connect GitHub Repository
+
+1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com)
+2. Navigate to **Workers & Pages** > **Create application** > **Pages** > **Connect to Git**
+3. Authorize Cloudflare to access your GitHub account
+4. Select your `foodly` repository
+
+#### Step 2: Configure Build Settings
+
+Set the following build configuration:
+
+- **Production branch:** `main`
+- **Build command:** `npm run build`
+- **Build output directory:** `dist`
+- **Root directory:** `/` (leave empty if project is in repo root)
+
+#### Step 3: Set Environment Variables
+
+In the Cloudflare Pages project settings, add these environment variables:
+
+| Variable                 | Value                         | Where to get it                                  |
+| ------------------------ | ----------------------------- | ------------------------------------------------ |
+| `VITE_SUPABASE_URL`      | Your Supabase project URL     | Supabase Dashboard > Project Settings > API      |
+| `VITE_SUPABASE_ANON_KEY` | Your Supabase anon/public key | Supabase Dashboard > Project Settings > API      |
+| `VITE_MAPTILER_KEY`      | (Optional) MapTiler API key   | [MapTiler Dashboard](https://cloud.maptiler.com) |
+
+**Important:** Add these for both **Production** and **Preview** environments.
+
+#### Step 4: Configure Supabase Redirect URLs
+
+Update your Supabase authentication settings:
+
+1. Go to Supabase Dashboard > **Authentication** > **URL Configuration**
+2. Add your Cloudflare Pages URL to **Redirect URLs**:
+   ```
+   https://foodly.pages.dev/auth/callback
+   https://your-custom-domain.com/auth/callback
+   ```
+3. Update **Site URL** to your production domain
+
+#### Step 5: Deploy
+
+1. Click **Save and Deploy**
+2. Cloudflare will build and deploy your site automatically
+3. Every push to `main` will trigger a new production deployment
+4. Every push to other branches creates a unique preview deployment
+
+#### Preview Deployments
+
+Cloudflare Pages automatically creates preview deployments for every branch:
+
+- **URL format:** `https://<branch-name>.foodly.pages.dev`
+- **Use case:** Test features before merging to production
+- **Environment:** Uses preview environment variables
+- **Auto-cleanup:** Preview URLs are available as long as the branch exists
+
+#### Custom Domain (Optional)
+
+1. Go to your Cloudflare Pages project > **Custom domains**
+2. Click **Set up a custom domain**
+3. Enter your domain (e.g., `foodly.com`)
+4. Follow the DNS configuration instructions
+5. SSL certificates are automatically provisioned
+
+#### Local Build Verification
+
+Before deploying, verify your build works locally:
+
+```bash
+# Install dependencies
+npm install
+
+# Build the project
+npm run build
+
+# Preview the production build
+npm run preview
+```
+
+Visit `http://localhost:4173` to test the production build.
+
+#### Troubleshooting
+
+**Build fails with "command not found":**
+
+- Ensure Node.js version is 18 or higher
+- Check that all dependencies are in `package.json`
+
+**Environment variables not working:**
+
+- Verify variable names start with `VITE_`
+- Check they're set in both Production and Preview environments
+- Redeploy after adding/changing environment variables
+
+**Routes return 404:**
+
+- The `_redirects` file ensures SPA routing works
+- Verify it exists in your repository root
+
+**Authentication redirect issues:**
+
+- Update Supabase redirect URLs to include your Cloudflare Pages domain
+- Check that callback URL matches: `/auth/callback`
+
+#### Resources
+
+- [Cloudflare Pages Documentation](https://developers.cloudflare.com/pages/)
+- [Vite Deployment Guide](https://vitejs.dev/guide/static-deploy.html)
+- [Supabase URL Configuration](https://supabase.com/docs/guides/auth/redirect-urls)
 
 ## Project Structure
 
@@ -108,9 +230,11 @@ foodly/
 │   ├── main.jsx        # Entry point
 │   └── index.css       # Global styles + Tailwind
 ├── supabase-setup.sql  # Database schema
+├── wrangler.toml       # Cloudflare configuration
+├── _redirects          # SPA routing for Cloudflare Pages
 ├── index.html          # HTML template
 ├── tailwind.config.js  # Tailwind configuration
-├── vite.config.js      # Vite configuration
+├── vite.config.ts      # Vite configuration (optimized for CF Pages)
 └── package.json        # Dependencies
 ```
 
