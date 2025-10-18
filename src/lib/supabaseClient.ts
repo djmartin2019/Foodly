@@ -80,17 +80,60 @@ const initializeSupabase = async () => {
     throw new Error("Missing Supabase environment variables.");
   }
 
-  return createClient(url, anonKey);
+  const client = createClient(url, anonKey);
+  console.log("✅ Supabase initialized successfully");
+  return client;
 };
 
-// Export a promise that resolves to the Supabase client
-export const supabasePromise = initializeSupabase();
+// Create a synchronous-looking interface that handles async initialization
+class AsyncSupabaseClient {
+  private clientPromise: Promise<any>;
+  private initializedClient: any = null;
 
-// For backward compatibility, export a getter that returns the promise
-export const supabase = new Proxy({} as any, {
-  get(target, prop) {
-    return (...args: any[]) => {
-      return supabasePromise.then(client => client[prop](...args));
+  constructor() {
+    this.clientPromise = initializeSupabase();
+    this.clientPromise.then(client => {
+      this.initializedClient = client;
+    });
+  }
+
+  get auth() {
+    return new Proxy({}, {
+      get: (target, prop) => {
+        return (...args: any[]) => {
+          if (this.initializedClient) {
+            return this.initializedClient.auth[prop](...args);
+          }
+          return this.clientPromise.then(client => client.auth[prop](...args));
+        };
+      }
+    });
+  }
+
+  get from() {
+    return (table: string) => {
+      if (this.initializedClient) {
+        return this.initializedClient.from(table);
+      }
+      return this.clientPromise.then(client => client.from(table));
     };
   }
-});
+
+  // Add other Supabase methods as needed
+  get storage() {
+    return new Proxy({}, {
+      get: (target, prop) => {
+        return (...args: any[]) => {
+          if (this.initializedClient) {
+            return this.initializedClient.storage[prop](...args);
+          }
+          return this.clientPromise.then(client => client.storage[prop](...args));
+        };
+      }
+    });
+  }
+}
+
+// Export the async client
+export const supabase = new AsyncSupabaseClient();
+export const supabasePromise = initializeSupabase();
