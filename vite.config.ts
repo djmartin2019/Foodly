@@ -23,12 +23,16 @@ export default defineConfig(({ mode }) => {
 
   // Fallback to process.env for Cloudflare Pages
   const supabaseUrl = env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-  const supabaseAnonKey = env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
+  const supabaseAnonKey =
+    env.VITE_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY;
   const mapboxToken = env.VITE_MAPBOX_TOKEN || process.env.VITE_MAPBOX_TOKEN;
 
   console.log("Final values after fallback:");
   console.log("Supabase URL:", supabaseUrl ? "✅ Present" : "❌ Missing");
-  console.log("Supabase Anon Key:", supabaseAnonKey ? "✅ Present" : "❌ Missing");
+  console.log(
+    "Supabase Anon Key:",
+    supabaseAnonKey ? "✅ Present" : "❌ Missing"
+  );
   console.log("Mapbox Token:", mapboxToken ? "✅ Present" : "❌ Missing");
 
   return {
