@@ -1,0 +1,31 @@
+{
+  "name": "Foodly - Find food that feels local",
+  "short_name": "Foodly",
+  "description": "A community-driven platform for discovering local food gems. Pin spots, vouch favorites, and discover trends powered by real people sharing authentic taste experiences.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B0F0E",
+  "theme_color": "#24C38C",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["food", "lifestyle", "social"],
+  "lang": "en",
+  "dir": "ltr"
+}

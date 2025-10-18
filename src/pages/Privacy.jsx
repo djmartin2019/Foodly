@@ -24,21 +24,30 @@ function Privacy() {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gradient mb-4">Privacy Policy</h1>
-          <p className="text-zinc-400">Last updated: January 2025</p>
+          <h1 className="text-4xl font-bold text-gradient mb-4">
+            Privacy Policy
+          </h1>
+          <p className="text-zinc-400">Last updated: October 2025</p>
         </div>
 
         {/* Content */}
         <div className="glass rounded-3xl p-8 border border-zinc-800">
           <div className="prose prose-invert max-w-none">
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Our Commitment to Privacy</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Our Commitment to Privacy
+            </h2>
             <p className="text-zinc-300 mb-6">
-              At Foodly, we believe in transparency and protecting your privacy. This policy explains how we collect, 
-              use, and safeguard your information when you use our service.
+              At Foodly, we believe in transparency and protecting your privacy.
+              This policy explains how we collect, use, and safeguard your
+              information when you use our service.
             </p>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Information We Collect</h2>
-            <h3 className="text-xl font-semibold text-zinc-200 mb-3">Personal Information</h3>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Information We Collect
+            </h2>
+            <h3 className="text-xl font-semibold text-zinc-200 mb-3">
+              Personal Information
+            </h3>
             <p className="text-zinc-300 mb-4">
               When you create an account, we collect:
             </p>
@@ -49,7 +58,9 @@ function Privacy() {
               <li>Password (encrypted)</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-zinc-200 mb-3">Location Data</h3>
+            <h3 className="text-xl font-semibold text-zinc-200 mb-3">
+              Location Data
+            </h3>
             <p className="text-zinc-300 mb-6">
               We collect location information when you:
             </p>
@@ -59,9 +70,12 @@ function Privacy() {
               <li>Share your general area for local food trends</li>
             </ul>
 
-            <h3 className="text-xl font-semibold text-zinc-200 mb-3">Usage Information</h3>
+            <h3 className="text-xl font-semibold text-zinc-200 mb-3">
+              Usage Information
+            </h3>
             <p className="text-zinc-300 mb-6">
-              We automatically collect information about how you use Foodly, including:
+              We automatically collect information about how you use Foodly,
+              including:
             </p>
             <ul className="text-zinc-300 mb-6 list-disc list-inside space-y-2">
               <li>Restaurant recommendations you make</li>
@@ -70,7 +84,9 @@ function Privacy() {
               <li>Device information and IP address</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">How We Use Your Information</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              How We Use Your Information
+            </h2>
             <p className="text-zinc-300 mb-4">We use your information to:</p>
             <ul className="text-zinc-300 mb-6 list-disc list-inside space-y-2">
               <li>Provide personalized restaurant recommendations</li>
@@ -81,10 +97,15 @@ function Privacy() {
               <li>Prevent fraud and ensure platform safety</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Data Sharing and Disclosure</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Data Sharing and Disclosure
+            </h2>
             <p className="text-zinc-300 mb-4">
-              <strong className="text-brand-green">We don't sell your personal information.</strong> We may share aggregated, 
-              anonymized data for research and trend analysis, but never your individual data.
+              <strong className="text-brand-green">
+                We don't sell your personal information.
+              </strong>{" "}
+              We may share aggregated, anonymized data for research and trend
+              analysis, but never your individual data.
             </p>
             <p className="text-zinc-300 mb-6">
               We may share your information only in these limited circumstances:
@@ -96,14 +117,20 @@ function Privacy() {
               <li>In case of a business transfer (with notice)</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Data Security</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Data Security
+            </h2>
             <p className="text-zinc-300 mb-6">
-              We implement industry-standard security measures to protect your information, including encryption, 
-              secure servers, and regular security audits. However, no method of transmission over the internet 
-              is 100% secure, and we cannot guarantee absolute security.
+              We implement industry-standard security measures to protect your
+              information, including encryption, secure servers, and regular
+              security audits. However, no method of transmission over the
+              internet is 100% secure, and we cannot guarantee absolute
+              security.
             </p>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Your Rights and Choices</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Your Rights and Choices
+            </h2>
             <p className="text-zinc-300 mb-4">You have the right to:</p>
             <ul className="text-zinc-300 mb-6 list-disc list-inside space-y-2">
               <li>Access and update your personal information</li>
@@ -113,34 +140,52 @@ function Privacy() {
               <li>Correct inaccurate information</li>
             </ul>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Cookies and Tracking</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Cookies and Tracking
+            </h2>
             <p className="text-zinc-300 mb-6">
-              We use cookies and similar technologies to enhance your experience, remember your preferences, 
-              and analyze usage patterns. You can control cookie settings through your browser preferences.
+              We use cookies and similar technologies to enhance your
+              experience, remember your preferences, and analyze usage patterns.
+              You can control cookie settings through your browser preferences.
             </p>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Third-Party Services</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Third-Party Services
+            </h2>
             <p className="text-zinc-300 mb-6">
-              We use trusted third-party services (like Supabase for data storage and Mapbox for maps) 
-              that have their own privacy policies. We ensure these services meet our privacy standards.
+              We use trusted third-party services (like Supabase for data
+              storage and Mapbox for maps) that have their own privacy policies.
+              We ensure these services meet our privacy standards.
             </p>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Children's Privacy</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Children's Privacy
+            </h2>
             <p className="text-zinc-300 mb-6">
-              Foodly is not intended for children under 13. We do not knowingly collect personal information 
-              from children under 13. If we learn we have collected such information, we will delete it promptly.
+              Foodly is not intended for children under 13. We do not knowingly
+              collect personal information from children under 13. If we learn
+              we have collected such information, we will delete it promptly.
             </p>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Changes to This Policy</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Changes to This Policy
+            </h2>
             <p className="text-zinc-300 mb-6">
-              We may update this Privacy Policy from time to time. We will notify you of any changes by 
-              posting the new policy on this page and updating the "Last updated" date.
+              We may update this Privacy Policy from time to time. We will
+              notify you of any changes by posting the new policy on this page
+              and updating the "Last updated" date.
             </p>
 
-            <h2 className="text-2xl font-bold text-zinc-100 mb-4">Contact Us</h2>
+            <h2 className="text-2xl font-bold text-zinc-100 mb-4">
+              Contact Us
+            </h2>
             <p className="text-zinc-300 mb-6">
-              If you have any questions about this Privacy Policy, please contact us at{" "}
-              <a href="mailto:djmartindev@gmail.com" className="text-brand-green hover:text-brand-mint transition-colors">
+              If you have any questions about this Privacy Policy, please
+              contact us at{" "}
+              <a
+                href="mailto:djmartindev@gmail.com"
+                className="text-brand-green hover:text-brand-mint transition-colors"
+              >
                 djmartindev@gmail.com
               </a>
             </p>

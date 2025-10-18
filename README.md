@@ -31,6 +31,29 @@ A modern, dark-mode web app for discovering local food spots through community-d
 - Smooth animations and hover states
 - Mobile-first responsive design
 
+## SEO & Social Sharing
+
+### Open Graph & Social Media
+
+- **Open Graph tags** for Facebook, LinkedIn sharing
+- **Twitter Cards** for Twitter sharing
+- **Custom OG image** (1200x630px) with brand design
+- **Structured data** (JSON-LD) for search engines
+
+### Generated Assets
+
+- `favicon.svg` - Brand-consistent favicon
+- `og-image.png` - Social sharing image
+- `manifest.json` - PWA manifest
+- `robots.txt` - Search engine directives
+- `sitemap.xml` - Site structure for crawlers
+
+### Generate Social Image
+
+```bash
+npm run generate-og
+```
+
 ## Cloudflare Pages Deployment Fix
 
 ### Environment Variables Issue Resolution
@@ -38,10 +61,12 @@ A modern, dark-mode web app for discovering local food spots through community-d
 If you're experiencing "Missing Supabase environment variables" errors on Cloudflare Pages:
 
 1. **Ensure Build System Version = 3**
+
    - Go to Cloudflare Pages > Settings > Builds & deployments
    - Set Build system version to 3
 
 2. **Variables defined under "Production" and "Preview"**
+
    - Go to Settings > Environment variables
    - Add these variables to BOTH environments:
      - `VITE_SUPABASE_URL`
@@ -49,15 +74,18 @@ If you're experiencing "Missing Supabase environment variables" errors on Cloudf
      - `VITE_MAPBOX_TOKEN`
 
 3. **Redeploy with "Clear Build Cache" checked**
+
    - Go to Deployments tab
    - Click "Retry deployment"
    - Check "Clear build cache" option
    - Wait for deployment to complete
 
 4. **Verify in console:**
+
    ```javascript
-   console.log(import.meta.env)
+   console.log(import.meta.env);
    ```
+
    Should show all `VITE_` variables present.
 
 5. **If you still see `Missing`, confirm `vite.config.ts` includes loadEnv()**
@@ -67,6 +95,7 @@ If you're experiencing "Missing Supabase environment variables" errors on Cloudf
 ### Build Log Verification
 
 During deployment, you should see in build logs:
+
 ```
 Building with environment: production
 Supabase URL (sanity check): ✅ Present

@@ -6,6 +6,7 @@ import {
   Sparkles,
   Users,
   Shield,
+  ArrowRight,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -73,35 +74,35 @@ function Landing() {
         attributionControl: false,
       });
 
-    // Wait for map to load
-    map.current.on("load", () => {
-      setMapLoaded(true);
+      // Wait for map to load
+      map.current.on("load", () => {
+        setMapLoaded(true);
 
-      // Create custom marker element for Pho Spot
-      const markerElement = document.createElement("div");
-      markerElement.className = "custom-marker";
-      markerElement.style.width = "32px";
-      markerElement.style.height = "32px";
-      markerElement.style.borderRadius = "50%";
-      markerElement.style.backgroundColor = "#24C38C";
-      markerElement.style.border = "3px solid #0B0F0E";
-      markerElement.style.boxShadow = "0 0 20px rgba(36, 195, 140, 0.6)";
-      markerElement.style.cursor = "pointer";
-      markerElement.style.display = "flex";
-      markerElement.style.alignItems = "center";
-      markerElement.style.justifyContent = "center";
-      markerElement.innerHTML = "📍";
-      markerElement.style.fontSize = "16px";
+        // Create custom marker element for Pho Spot
+        const markerElement = document.createElement("div");
+        markerElement.className = "custom-marker";
+        markerElement.style.width = "32px";
+        markerElement.style.height = "32px";
+        markerElement.style.borderRadius = "50%";
+        markerElement.style.backgroundColor = "#24C38C";
+        markerElement.style.border = "3px solid #0B0F0E";
+        markerElement.style.boxShadow = "0 0 20px rgba(36, 195, 140, 0.6)";
+        markerElement.style.cursor = "pointer";
+        markerElement.style.display = "flex";
+        markerElement.style.alignItems = "center";
+        markerElement.style.justifyContent = "center";
+        markerElement.innerHTML = "📍";
+        markerElement.style.fontSize = "16px";
 
-      // Add main marker for "Pho Spot on 5th"
-      const marker = new mapboxgl.Marker({
-        element: markerElement,
-        anchor: "bottom",
-      })
-        .setLngLat([-95.3698, 29.7604])
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25, className: "map-popup" }).setHTML(
-            `
+        // Add main marker for "Pho Spot on 5th"
+        const marker = new mapboxgl.Marker({
+          element: markerElement,
+          anchor: "bottom",
+        })
+          .setLngLat([-95.3698, 29.7604])
+          .setPopup(
+            new mapboxgl.Popup({ offset: 25, className: "map-popup" }).setHTML(
+              `
             <div style="background: #18181B; color: #fff; padding: 12px; border-radius: 8px; border: 1px solid #24C38C44;">
               <h4 style="font-weight: bold; margin: 0 0 4px 0; color: #24C38C;">Pho Spot on 5th</h4>
               <p style="margin: 0; font-size: 12px; color: #A1A1AA;">Best banh mi in the neighborhood</p>
@@ -110,35 +111,35 @@ function Landing() {
               </div>
             </div>
           `
+            )
           )
-        )
-        .addTo(map.current);
-
-      // Add ambient markers for visual interest
-      const ambientLocations = [
-        { lng: -95.3798, lat: 29.7704, name: "Taco Haven" },
-        { lng: -95.3598, lat: 29.7504, name: "Coffee Hideout" },
-        { lng: -95.3898, lat: 29.7504, name: "Dim Sum Palace" },
-      ];
-
-      ambientLocations.forEach((location) => {
-        const ambientMarker = document.createElement("div");
-        ambientMarker.style.width = "12px";
-        ambientMarker.style.height = "12px";
-        ambientMarker.style.borderRadius = "50%";
-        ambientMarker.style.backgroundColor = "#2EE59D";
-        ambientMarker.style.border = "2px solid #0B0F0E";
-        ambientMarker.style.boxShadow = "0 0 10px rgba(46, 229, 157, 0.4)";
-        ambientMarker.style.opacity = "0.6";
-
-        new mapboxgl.Marker({
-          element: ambientMarker,
-          anchor: "center",
-        })
-          .setLngLat([location.lng, location.lat])
           .addTo(map.current);
+
+        // Add ambient markers for visual interest
+        const ambientLocations = [
+          { lng: -95.3798, lat: 29.7704, name: "Taco Haven" },
+          { lng: -95.3598, lat: 29.7504, name: "Coffee Hideout" },
+          { lng: -95.3898, lat: 29.7504, name: "Dim Sum Palace" },
+        ];
+
+        ambientLocations.forEach((location) => {
+          const ambientMarker = document.createElement("div");
+          ambientMarker.style.width = "12px";
+          ambientMarker.style.height = "12px";
+          ambientMarker.style.borderRadius = "50%";
+          ambientMarker.style.backgroundColor = "#2EE59D";
+          ambientMarker.style.border = "2px solid #0B0F0E";
+          ambientMarker.style.boxShadow = "0 0 10px rgba(46, 229, 157, 0.4)";
+          ambientMarker.style.opacity = "0.6";
+
+          new mapboxgl.Marker({
+            element: ambientMarker,
+            anchor: "center",
+          })
+            .setLngLat([location.lng, location.lat])
+            .addTo(map.current);
+        });
       });
-    });
     }, 100); // Small delay to ensure DOM is ready
 
     // Cleanup
@@ -233,9 +234,9 @@ function Landing() {
             </p>
           </div>
 
-          {/* CTA Button */}
+          {/* CTA Buttons */}
           <div
-            className={`transition-all duration-1000 delay-700 ${
+            className={`flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-700 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-10"
@@ -248,7 +249,24 @@ function Landing() {
               Join the Beta
               <Sparkles className="w-5 h-5" />
             </button>
-            <p className="mt-6 text-sm text-zinc-500">
+
+            <button
+              onClick={() => navigate("/about")}
+              className="inline-flex items-center gap-3 px-8 py-4 glass text-zinc-100 font-semibold text-lg rounded-full border border-zinc-700 hover:border-brand-green hover:text-brand-green transition-all duration-300"
+            >
+              Learn More
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div
+            className={`mt-6 transition-all duration-1000 delay-700 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-10"
+            }`}
+          >
+            <p className="text-sm text-zinc-500">
               Your taste graph starts here.
             </p>
           </div>
@@ -381,13 +399,13 @@ function Landing() {
                       <div className="w-6 h-6 border-2 border-brand-green border-t-transparent rounded-full animate-spin"></div>
                     </div>
                   )}
-                  
+
                   {/* Map container - always rendered but hidden until map loads */}
                   <div
                     key="map-container"
                     ref={mapContainer}
                     className="w-full h-[200px]"
-                    style={{ display: mapLoaded ? 'block' : 'none' }}
+                    style={{ display: mapLoaded ? "block" : "none" }}
                   />
 
                   {/* Map overlay */}
@@ -461,6 +479,12 @@ function Landing() {
 
             {/* Links */}
             <div className="flex gap-8 text-sm">
+              <a
+                href="/about"
+                className="text-zinc-400 hover:text-brand-green transition-colors"
+              >
+                About
+              </a>
               <a
                 href="/terms"
                 className="text-zinc-400 hover:text-brand-green transition-colors"
