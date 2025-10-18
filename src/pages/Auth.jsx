@@ -95,7 +95,18 @@ function Auth() {
       const { data, error } = await signIn(formData.email, formData.password);
 
       if (error) {
-        setError(error.message);
+        // Provide more helpful error messages
+        if (error.message.includes("Invalid login credentials")) {
+          setError(
+            "Invalid email or password. Please check your credentials and try again."
+          );
+        } else if (error.message.includes("Email not confirmed")) {
+          setError(
+            "Please check your email and confirm your account before signing in."
+          );
+        } else {
+          setError(error.message);
+        }
       } else {
         navigate("/app");
       }

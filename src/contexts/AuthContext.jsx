@@ -89,14 +89,20 @@ export const AuthProvider = ({ children }) => {
 
   const signIn = async (email, password) => {
     try {
+      console.log("🔐 Attempting sign in for:", email);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("❌ Sign in error:", error.message, error.status);
+        throw error;
+      }
+      console.log("✅ Sign in successful");
       return { data, error: null };
     } catch (error) {
+      console.error("❌ Sign in failed:", error);
       return { data: null, error };
     }
   };
