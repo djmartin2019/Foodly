@@ -12,35 +12,15 @@ import { useAuth } from "../contexts/AuthContext";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-// Set Mapbox access token with secure runtime config
-const initializeMapbox = async () => {
-  // Try import.meta.env first (build-time)
-  if (import.meta.env.VITE_MAPBOX_TOKEN) {
-    mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
-    console.log("✅ Mapbox token loaded from build-time env");
-    return;
-  }
-  
-  // Try runtime config from Cloudflare Pages Function
-  try {
-    const response = await fetch('/api/config');
-    if (response.ok) {
-      const config = await response.json();
-      if (config.VITE_MAPBOX_TOKEN) {
-        mapboxgl.accessToken = config.VITE_MAPBOX_TOKEN;
-        console.log("✅ Mapbox token loaded from runtime config");
-        return;
-      }
-    }
-  } catch (error) {
-    console.warn('Failed to fetch Mapbox token from config:', error);
-  }
-  
-  console.warn("⚠️ Mapbox token not found");
-};
+// Set Mapbox access token
+const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
-// Initialize Mapbox token
-initializeMapbox();
+if (!mapboxToken) {
+  console.warn("⚠️ Mapbox token not found");
+} else {
+  mapboxgl.accessToken = mapboxToken;
+  console.log("✅ Mapbox token loaded successfully");
+}
 
 function Landing() {
   const [isVisible, setIsVisible] = useState(false);
