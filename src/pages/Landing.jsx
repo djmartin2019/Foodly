@@ -60,6 +60,11 @@ function Landing() {
       return;
     }
 
+    // Clear any existing content in the map container
+    if (mapContainer.current) {
+      mapContainer.current.innerHTML = '';
+    }
+
     // Initialize map
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
