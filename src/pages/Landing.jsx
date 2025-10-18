@@ -57,17 +57,21 @@ function Landing() {
       return;
     }
 
-    // Only initialize map when container is available and map isn't already created
-    if (!mapContainer.current || map.current) return;
+    // Initialize map immediately when component mounts
+    if (map.current) return;
 
-    // Initialize map
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/dark-v11",
-      center: [-95.3698, 29.7604], // Houston, TX
-      zoom: 13,
-      attributionControl: false,
-    });
+    // Small delay to ensure container is rendered
+    const timer = setTimeout(() => {
+      if (!mapContainer.current) return;
+
+      // Initialize map
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/dark-v11",
+        center: [-95.3698, 29.7604], // Houston, TX
+        zoom: 13,
+        attributionControl: false,
+      });
 
     // Wait for map to load
     map.current.on("load", () => {
@@ -136,8 +140,11 @@ function Landing() {
       });
     });
 
+    }, 100); // Small delay to ensure DOM is ready
+
     // Cleanup
     return () => {
+      clearTimeout(timer);
       if (map.current) {
         try {
           map.current.remove();
@@ -148,7 +155,7 @@ function Landing() {
         map.current = null;
       }
     };
-  }, [mapLoaded]); // Re-run when mapLoaded changes
+  }, []); // Only run once on mount
 
   const handleCTAClick = (e) => {
     e.preventDefault();
@@ -376,14 +383,13 @@ function Landing() {
                     </div>
                   )}
                   
-                  {/* Map container - only rendered when map is loaded */}
-                  {mapLoaded && (
-                    <div
-                      key="map-container"
-                      ref={mapContainer}
-                      className="w-full h-[200px]"
-                    />
-                  )}
+                  {/* Map container - always rendered but hidden until map loads */}
+                  <div
+                    key="map-container"
+                    ref={mapContainer}
+                    className="w-full h-[200px]"
+                    style={{ display: mapLoaded ? 'block' : 'none' }}
+                  />
 
                   {/* Map overlay */}
                   <div className="absolute top-2 right-2 glass rounded-lg px-2 py-1 border border-zinc-800">
