@@ -52,13 +52,13 @@ function Landing() {
 
   // Initialize map for community section
   useEffect(() => {
-    if (!mapContainer.current || map.current) return;
-
-    // Check if token is available
     if (!mapboxgl.accessToken) {
       console.warn("Mapbox token not found. Map will not render.");
       return;
     }
+
+    // Only initialize map when container is available and map isn't already created
+    if (!mapContainer.current || map.current) return;
 
     // Initialize map
     map.current = new mapboxgl.Map({
@@ -148,7 +148,7 @@ function Landing() {
         map.current = null;
       }
     };
-  }, []);
+  }, [mapLoaded]); // Re-run when mapLoaded changes
 
   const handleCTAClick = (e) => {
     e.preventDefault();
@@ -361,29 +361,29 @@ function Landing() {
 
                 {/* Interactive Map */}
                 <div className="relative rounded-2xl overflow-hidden mb-4 border border-zinc-800/50">
-                  <div
-                    key="map-container"
-                    ref={mapContainer}
-                    className="w-full h-[200px]"
-                    style={{
-                      background: mapLoaded ? "transparent" : "#18181B",
-                    }}
-                  >
-                    {/* Loading state */}
-                    {!mapLoaded && !mapboxgl.accessToken && (
-                      <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900/50 backdrop-blur-sm">
-                        <MapPin className="w-12 h-12 text-brand-green/30 mb-2" />
-                        <p className="text-zinc-500 text-xs">
-                          Map preview coming soon
-                        </p>
-                      </div>
-                    )}
-                    {!mapLoaded && mapboxgl.accessToken && (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <div className="w-6 h-6 border-2 border-brand-green border-t-transparent rounded-full animate-spin"></div>
-                      </div>
-                    )}
-                  </div>
+                  {/* Loading state overlay */}
+                  {!mapLoaded && !mapboxgl.accessToken && (
+                    <div className="w-full h-[200px] flex flex-col items-center justify-center bg-zinc-900/50 backdrop-blur-sm">
+                      <MapPin className="w-12 h-12 text-brand-green/30 mb-2" />
+                      <p className="text-zinc-500 text-xs">
+                        Map preview coming soon
+                      </p>
+                    </div>
+                  )}
+                  {!mapLoaded && mapboxgl.accessToken && (
+                    <div className="w-full h-[200px] flex items-center justify-center bg-zinc-900">
+                      <div className="w-6 h-6 border-2 border-brand-green border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
+                  
+                  {/* Map container - only rendered when map is loaded */}
+                  {mapLoaded && (
+                    <div
+                      key="map-container"
+                      ref={mapContainer}
+                      className="w-full h-[200px]"
+                    />
+                  )}
 
                   {/* Map overlay */}
                   <div className="absolute top-2 right-2 glass rounded-lg px-2 py-1 border border-zinc-800">
